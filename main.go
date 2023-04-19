@@ -1,9 +1,11 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"math/rand"
+	"os"
 
 	"fyne.io/fyne"
 	"fyne.io/fyne/app"
@@ -12,7 +14,12 @@ import (
 	"github.com/Knetic/govaluate"
 )
 
+const logPath = "logs/calc-log.log"
+
 func main() {
+
+	logger(logPath)
+
 	// Инициализация приложения
 	a := app.New()
 	// наше окошко
@@ -58,7 +65,7 @@ func main() {
 		if err != nil {
 			valueDisplay.SetText(errz[rand.Intn(len(errz))])
 			log.Printf(`Вы не нравитесь калькулятору...
-Он говорит - "%s"`, errz[rand.Intn(len(errz))])
+			Он говорит - "%s"`, errz[rand.Intn(len(errz))])
 			return
 		}
 		value, err := swear.Evaluate(nil)
@@ -101,4 +108,21 @@ func BtnEvent(mod string, entry *string, entryDisplay *widget.Entry) *widget.But
 
 	})
 	return button
+}
+
+// Содаем log файл
+func logger(f string) {
+	// Создаем директорию "logs"
+	if _, err := os.Stat("logs"); errors.Is(err, os.ErrNotExist) {
+		if e := os.Mkdir("logs", os.ModePerm); e != nil {
+			log.Fatal(e)
+		}
+	}
+	// Создаем log файл, пишем туда логи
+	file, err := os.OpenFile(f, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.SetOutput(file)
+	log.Printf("[INFO] Logs are written to file %s", f)
 }
