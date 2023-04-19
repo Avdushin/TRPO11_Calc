@@ -27,7 +27,9 @@ func main() {
 	 */
 	entryDisplay := widget.NewEntry()
 	entryDisplay.SetPlaceHolder("Введите число")
-	entryDisplay.OnChanged = func(a string) { entry = a }
+	entryDisplay.OnChanged = func(text string) {
+		entry = text
+	}
 
 	valueDisplay := widget.NewLabel("")
 
@@ -36,15 +38,15 @@ func main() {
 
 	// Добавим кнопочки 1-9
 	for i := 1; i < 10; i++ {
-		buttonPad.AddObject(changeButton(fmt.Sprint(i), &entry, entryDisplay))
+		buttonPad.AddObject(BtnEvent(fmt.Sprint(i), &entry, entryDisplay))
 	}
-	buttonPad.AddObject(changeButton("0", &entry, entryDisplay))
+	buttonPad.AddObject(BtnEvent("0", &entry, entryDisplay))
 
 	btns := []string{"+", "-", "/", "*", "%", "(", ")", "^", "<", ">"}
 
 	// кнопки операций
 	for i := range btns {
-		buttonPad.AddObject(changeButton(btns[i], &entry, entryDisplay))
+		buttonPad.AddObject(BtnEvent(btns[i], &entry, entryDisplay))
 	}
 	// Ошибки (учим калькулейтор ругаться)
 	errz := []string{"АААА, ОШИБКО МАНАМА!(x_x)", "Ты дебил?", "Что ты несешь?", "Я отказываюсь это считать", "Считай сам, я в отпуске", "Считай сам"}
@@ -92,7 +94,7 @@ func main() {
 }
 
 // Обработаем события при клике на кнопушки
-func changeButton(mod string, entry *string, entryDisplay *widget.Entry) *widget.Button {
+func BtnEvent(mod string, entry *string, entryDisplay *widget.Entry) *widget.Button {
 	button := widget.NewButton(mod, func() {
 		*entry += mod
 		entryDisplay.SetText(*entry)
