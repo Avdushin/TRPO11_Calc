@@ -49,8 +49,8 @@ build:
 	go build -o bin/$(appname) main.go
 ```
 
-## P.s
-## осторожно, он немного ругается
+### P.s
+### осторожно, он немного ругается
 
 
 ![](imgs/bruh.jpg)

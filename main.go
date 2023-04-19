@@ -65,7 +65,7 @@ func main() {
 		if err != nil {
 			valueDisplay.SetText(errz[rand.Intn(len(errz))])
 			log.Printf(`Вы не нравитесь калькулятору...
-			Он говорит - "%s"`, errz[rand.Intn(len(errz))])
+	Он говорит - "%s"`, errz[rand.Intn(len(errz))])
 			return
 		}
 		value, err := swear.Evaluate(nil)
